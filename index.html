@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CareerIQ — Career Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#05080f;--surf:#0c1220;--surf2:#0f1828;--border:#1a2640;--border2:#243550;
+  --text:#e8eef8;--muted:#3d5580;--accent:#4f8ef7;--cyan:#22d3ee;
+  --green:#10b981;--amber:#f59e0b;--purple:#a855f7;--red:#f43f5e;
+  --grad:linear-gradient(135deg,#1d4ed8 0%,#7c3aed 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* noise texture */
+body::before{content:'';position:fixed;inset:0;z-index:0;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events:none;}
+
+.z{position:relative;z-index:1;}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
+
+/* ── HEADER ── */
+header{border-bottom:1px solid var(--border2);background:rgba(5,8,15,.95);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1100px;margin:0 auto;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-mark{width:38px;height:38px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 20px rgba(79,142,247,.3);}
+.logo-name{font-size:18px;font-weight:900;letter-spacing:-.03em;}
+.logo-name span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo-tag{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.badge{font-size:10px;font-family:'JetBrains Mono',monospace;padding:4px 10px;border-radius:20px;}
+.badge-blue{background:rgba(79,142,247,.1);color:#93b8fb;border:1px solid rgba(79,142,247,.2);}
+.badge-green{background:rgba(16,185,129,.1);color:#6ee7b7;border:1px solid rgba(16,185,129,.2);}
+
+/* ── HERO ── */
+.hero{padding:72px 0 52px;text-align:center;}
+.hero-eyebrow{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';height:1px;width:40px;background:var(--border2);}
+.hero h1{font-size:clamp(32px,5.5vw,60px);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:18px;}
+.hero h1 .grad{background:linear-gradient(135deg,#93b8fb,#22d3ee 40%,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto 40px;line-height:1.7;font-weight:500;}
+
+/* ── SEARCH BOX ── */
+.search-card{background:var(--surf);border:1px solid var(--border2);border-radius:20px;padding:28px;max-width:680px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.search-row{display:flex;gap:10px;margin-bottom:14px;}
+.inp-wrap{flex:1;position:relative;}
+.inp-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+input[type=text]{width:100%;background:var(--surf2);border:1.5px solid var(--border2);border-radius:12px;padding:14px 14px 14px 44px;font-size:15px;font-weight:600;color:var(--text);font-family:'Cabinet Grotesk',sans-serif;outline:none;transition:border-color .2s;}
+input[type=text]:focus{border-color:var(--accent);}
+input[type=text]::placeholder{color:var(--muted);font-weight:500;}
+.loc-inp{padding-left:44px!important;max-width:180px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:12px;font-size:14px;font-weight:800;font-family:'Cabinet Grotesk',sans-serif;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;letter-spacing:-.01em;}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 20px rgba(79,142,247,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(79,142,247,.45);}
+.btn-primary:disabled{background:var(--border2);color:var(--muted);box-shadow:none;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border2);padding:10px 18px;font-size:13px;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.btn-green{background:rgba(16,185,129,.12);color:var(--green);border:1.5px solid rgba(16,185,129,.25);padding:10px 18px;font-size:13px;}
+.btn-green:hover{background:rgba(16,185,129,.2);}
+.btn-purple{background:rgba(168,85,247,.12);color:var(--purple);border:1.5px solid rgba(168,85,247,.25);padding:10px 18px;font-size:13px;}
+.btn-purple:hover{background:rgba(168,85,247,.2);}
+
+.example-roles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.role-chip{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;background:var(--surf2);border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:all .15s;}
+.role-chip:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── STATUS ── */
+.status-wrap{max-width:680px;margin:16px auto 0;display:none;}
+.status-bar{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:var(--surf);border:1px solid var(--border2);font-size:13px;font-family:'JetBrains Mono',monospace;}
+.sdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sdot-blue{background:var(--accent);animation:pulse 1s infinite;}
+.sdot-green{background:var(--green);}
+.sdot-red{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+
+/* ── RESULTS LAYOUT ── */
+#results{display:none;margin-top:48px;animation:fadeUp .4s ease;}
+.results-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;}
+.results-title{font-size:26px;font-weight:900;letter-spacing:-.03em;}
+.results-title span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.dl-row{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:2px;background:var(--surf);border:1px solid var(--border2);border-radius:14px;padding:5px;margin-bottom:24px;overflow-x:auto;}
+.tab{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--muted);white-space:nowrap;transition:all .15s;font-family:'Cabinet Grotesk',sans-serif;}
+.tab.active{background:var(--surf2);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+
+/* ── CARDS ── */
+.card{background:var(--surf);border:1px solid var(--border2);border-radius:16px;overflow:hidden;margin-bottom:16px;}
+.card-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.card-hdr-icon{font-size:18px;}
+.card-hdr-title{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.card-body{padding:20px;}
+
+/* ── SALARY OVERVIEW ── */
+.salary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.salary-band{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:16px;text-align:center;}
+.salary-band-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:6px;}
+.salary-band-val{font-size:18px;font-weight:800;color:var(--cyan);}
+.trend-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;}
+.trend-growing{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);}
+.trend-stable{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+.trend-declining{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2);}
+
+/* ── COMPANIES TABLE ── */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-family:'JetBrains Mono',monospace;padding:10px 12px;text-align:left;background:var(--surf2);border-bottom:1px solid var(--border);}
+.tbl td{padding:12px;font-size:13px;border-bottom:1px solid rgba(26,38,64,.5);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(79,142,247,.03);}
+.source-tag{font-size:10px;padding:2px 7px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-weight:600;}
+.src-indeed{background:rgba(34,211,238,.1);color:var(--cyan);}
+.src-glassdoor{background:rgba(16,185,129,.1);color:var(--green);}
+.src-linkedin{background:rgba(79,142,247,.1);color:var(--accent);}
+.salary-cell{color:var(--amber);font-weight:700;font-family:'JetBrains Mono',monospace;font-size:12px;}
+
+/* ── SKILLS ── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.skill-card{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:14px;}
+.skill-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.skill-name{font-size:14px;font-weight:800;}
+.skill-cat{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.skill-meta{display:flex;gap:6px;}
+.pill{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;}
+.pill-expert{background:rgba(244,63,94,.1);color:#fb7185;}
+.pill-advanced{background:rgba(245,158,11,.1);color:var(--amber);}
+.pill-intermediate{background:rgba(16,185,129,.1);color:var(--green);}
+.pill-beginner{background:rgba(79,142,247,.1);color:var(--accent);}
+.demand-bar-wrap{height:4px;background:var(--border2);border-radius:2px;margin-top:8px;}
+.demand-bar{height:100%;border-radius:2px;background:var(--grad);}
+
+/* ── RESOURCES ── */
+.resources-list{display:flex;flex-direction:column;gap:10px;}
+.resource-item{display:flex;align-items:center;gap:14px;background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:14px;transition:border-color .15s;}
+.resource-item:hover{border-color:var(--accent);}
+.resource-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.resource-info{flex:1;}
+.resource-title{font-size:14px;font-weight:700;margin-bottom:2px;}
+.resource-meta{font-size:11px;color:var(--muted);}
+.resource-tags{display:flex;gap:6px;margin-top:6px;}
+.free-tag{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;}
+.paid-tag{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;}
+.platform-tag{background:var(--border);color:var(--muted);font-size:10px;padding:2px 7px;border-radius:20px;}
+.resource-link{color:var(--accent);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;}
+.resource-link:hover{text-decoration:underline;}
+
+/* ── INTERVIEW QS ── */
+.q-list{display:flex;flex-direction:column;gap:12px;}
+.q-item{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;}
+.q-header{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;}
+.q-num{width:28px;height:28px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.q-text{font-size:14px;font-weight:700;flex:1;}
+.q-tags{display:flex;gap:6px;flex-shrink:0;}
+.q-cat{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;}
+.cat-technical{background:rgba(79,142,247,.1);color:var(--accent);}
+.cat-behavioral{background:rgba(168,85,247,.1);color:var(--purple);}
+.cat-situational{background:rgba(34,211,238,.1);color:var(--cyan);}
+.q-diff-easy{background:rgba(16,185,129,.1);color:var(--green);font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;}
+.q-diff-medium{background:rgba(245,158,11,.1);color:var(--amber);font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;}
+.q-diff-hard{background:rgba(244,63,94,.1);color:var(--red);font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;}
+.q-answer{padding:0 16px 14px 54px;font-size:13px;color:#94a3b8;line-height:1.7;display:none;}
+.q-arrow{font-size:12px;color:var(--muted);transition:transform .2s;}
+.q-item.open .q-answer{display:block;}
+.q-item.open .q-arrow{transform:rotate(180deg);}
+
+/* ── NEGOTIATION ── */
+.neg-scripts{display:flex;flex-direction:column;gap:12px;}
+.script-box{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:18px;}
+.script-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:8px;}
+.script-text{font-size:14px;color:var(--text);line-height:1.7;font-style:italic;}
+.email-box{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:18px;white-space:pre-wrap;font-size:13px;color:#94a3b8;font-family:'JetBrains Mono',monospace;line-height:1.7;}
+
+/* ── PEOPLE ── */
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.person-card{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;}
+.person-avatar{width:44px;height:44px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.person-name{font-size:14px;font-weight:800;margin-bottom:2px;}
+.person-title{font-size:12px;color:var(--muted);}
+.person-link{font-size:11px;color:var(--accent);text-decoration:none;font-weight:700;}
+
+/* ── MARKET INSIGHTS ── */
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.insight-card{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:16px;text-align:center;}
+.insight-val{font-size:24px;font-weight:900;color:var(--cyan);margin-bottom:4px;}
+.insight-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;}
+
+/* ── RED FLAGS ── */
+.flag-list{display:flex;flex-direction:column;gap:8px;}
+.flag-item{display:flex;gap:10px;align-items:flex-start;background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.15);border-radius:10px;padding:12px 14px;font-size:13px;color:#fda4af;line-height:1.5;}
+
+/* ── CERTS ── */
+.cert-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.cert-card{background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:16px;}
+.cert-name{font-size:14px;font-weight:800;margin-bottom:4px;}
+.cert-meta{font-size:12px;color:var(--muted);}
+.cert-val-high{color:var(--green);font-weight:700;}
+.cert-val-med{color:var(--amber);font-weight:700;}
+
+/* ── EMPTY / FOOTER ── */
+.empty{text-align:center;padding:72px 20px;border:1px solid var(--border2);border-radius:20px;background:var(--surf);}
+.empty-ico{font-size:52px;margin-bottom:14px;}
+.empty-ttl{font-size:17px;font-weight:800;margin-bottom:6px;}
+.empty-sub{font-size:13px;color:var(--muted);line-height:1.6;}
+footer{border-top:1px solid var(--border);margin-top:72px;padding:24px;text-align:center;font-size:12px;color:var(--muted);}
+footer a{color:var(--accent);text-decoration:none;}
+
+/* tab panels */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeUp .3s ease;}
+
+@media(max-width:768px){
+  .salary-grid,.insights-grid{grid-template-columns:repeat(2,1fr);}
+  .search-row{flex-direction:column;}
+  .loc-inp{max-width:100%!important;}
+  .tabs{gap:1px;}
+  .tab{padding:8px 12px;font-size:12px;}
+}
+</style>
+</head>
+<body>
+<div class="z">
+
+<header>
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-mark">🎯</div>
+      <div>
+        <div class="logo-name"><span>Career</span>IQ</div>
+        <div class="logo-tag">Career Intelligence Platform</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <span class="badge badge-green">🟢 Live Data</span>
+      <span class="badge badge-blue">AI Powered</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Career Intelligence</div>
+    <h1>Know Your <span class="grad">Market Worth.</span><br/>Negotiate with Confidence.</h1>
+    <p>Enter any job role — get real salary data, top hiring companies, skills roadmap, interview prep, and word-for-word negotiation scripts.</p>
+
+    <!-- SEARCH -->
+    <div class="search-card">
+      <div class="search-row">
+        <div class="inp-wrap">
+          <span class="inp-icon">💼</span>
+          <input id="roleInput" type="text" placeholder="e.g. Data Scientist, Product Manager, DevOps Engineer..."
+            onkeydown="if(event.key==='Enter')search()"/>
+        </div>
+        <div class="inp-wrap" style="max-width:170px;">
+          <span class="inp-icon">📍</span>
+          <input id="locInput" type="text" class="loc-inp" placeholder="USA / Global" value="Global"/>
+        </div>
+        <button class="btn btn-primary" id="searchBtn" onclick="search()">
+          🔍 Research
+        </button>
+      </div>
+      <div class="example-roles">
+        <span style="font-size:11px;color:var(--muted);margin-right:4px;">Try:</span>
+        <span class="role-chip" onclick="quickSearch('Software Engineer')">Software Engineer</span>
+        <span class="role-chip" onclick="quickSearch('Data Scientist')">Data Scientist</span>
+        <span class="role-chip" onclick="quickSearch('Product Manager')">Product Manager</span>
+        <span class="role-chip" onclick="quickSearch('UX Designer')">UX Designer</span>
+        <span class="role-chip" onclick="quickSearch('DevOps Engineer')">DevOps Engineer</span>
+      </div>
+    </div>
+
+    <div class="status-wrap" id="statusWrap">
+      <div class="status-bar">
+        <span class="sdot" id="sdot"></span>
+        <span id="statusMsg">Researching...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty" id="emptyState">
+    <div class="empty-ico">🎯</div>
+    <div class="empty-ttl">Your career intelligence awaits</div>
+    <div class="empty-sub">Enter a job role above to get salary data, skills roadmap,<br/>interview questions, and negotiation scripts — all in one place.</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <div class="results-header">
+      <div>
+        <div class="results-title">Research: <span id="resultRole"></span></div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px;" id="resultMeta"></div>
+      </div>
+      <div class="dl-row">
+        <button class="btn btn-green" onclick="downloadPDF()">📄 Download PDF Report</button>
+        <button class="btn btn-ghost" onclick="search()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('salary')">💰 Salary</button>
+      <button class="tab" onclick="switchTab('companies')">🏢 Companies</button>
+      <button class="tab" onclick="switchTab('skills')">🛠 Skills</button>
+      <button class="tab" onclick="switchTab('resources')">📚 Resources</button>
+      <button class="tab" onclick="switchTab('interview')">🎯 Interview Prep</button>
+      <button class="tab" onclick="switchTab('negotiate')">💬 Negotiate</button>
+      <button class="tab" onclick="switchTab('people')">👥 People</button>
+      <button class="tab" onclick="switchTab('market')">📊 Market</button>
+    </div>
+
+    <!-- SALARY TAB -->
+    <div id="tab-salary" class="tab-panel active">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">💰</span><span class="card-hdr-title">Salary Overview</span></div>
+        <div class="card-body">
+          <div class="salary-grid" id="salaryBands"></div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span id="trendBadge"></span>
+            <span style="font-size:13px;color:var(--muted);" id="trendReason"></span>
+          </div>
+          <div style="margin-top:12px;font-size:13px;color:var(--muted);" id="currencyNote"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">🌍</span><span class="card-hdr-title">Day in the Life</span></div>
+        <div class="card-body"><p style="font-size:14px;line-height:1.8;color:#94a3b8;" id="dayInLife"></p></div>
+      </div>
+    </div>
+
+    <!-- COMPANIES TAB -->
+    <div id="tab-companies" class="tab-panel">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">🏢</span><span class="card-hdr-title">Companies Hiring & Salaries</span></div>
+        <div class="card-body" style="padding:0;">
+          <table class="tbl" id="companiesTable">
+            <thead><tr>
+              <th>Company</th><th>Role / Title</th><th>Salary</th><th>Source</th>
+            </tr></thead>
+            <tbody id="companiesBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">⭐</span><span class="card-hdr-title">Top Companies (AI Analysis)</span></div>
+        <div class="card-body"><div id="topCompaniesGrid" class="cert-list"></div></div>
+      </div>
+    </div>
+
+    <!-- SKILLS TAB -->
+    <div id="tab-skills" class="tab-panel">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">🛠</span><span class="card-hdr-title">Required Skills</span></div>
+        <div class="card-body"><div class="skills-grid" id="skillsGrid"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">🏆</span><span class="card-hdr-title">Certifications Worth Getting</span></div>
+        <div class="card-body"><div class="cert-list" id="certsList"></div></div>
+      </div>
+    </div>
+
+    <!-- RESOURCES TAB -->
+    <div id="tab-resources" class="tab-panel">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">📚</span><span class="card-hdr-title">Learning Resources</span></div>
+        <div class="card-body"><div class="resources-list" id="resourcesList"></div></div>
+      </div>
+    </div>
+
+    <!-- INTERVIEW TAB -->
+    <div id="tab-interview" class="tab-panel">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">🎯</span><span class="card-hdr-title">Interview Questions & Answers</span></div>
+        <div class="card-body"><div class="q-list" id="questionsList"></div></div>
+      </div>
+    </div>
+
+    <!-- NEGOTIATE TAB -->
+    <div id="tab-negotiate" class="tab-panel">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">💬</span><span class="card-hdr-title">Negotiation Scripts</span></div>
+        <div class="card-body">
+          <div class="neg-scripts" id="negScripts"></div>
+          <div style="margin-top:16px;">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:10px;">📧 Email Template</div>
+            <div class="email-box" id="emailTemplate"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PEOPLE TAB -->
+    <div id="tab-people" class="tab-panel">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">👥</span><span class="card-hdr-title">People in This Role</span></div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Real professionals — connect with them on LinkedIn to learn from their career paths.</p>
+          <div class="people-grid" id="peopleGrid"></div>
+          <div id="linkedinTips" style="margin-top:16px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARKET TAB -->
+    <div id="tab-market" class="tab-panel">
+      <div class="card">
+        <div class="card-hdr"><span class="card-hdr-icon">📊</span><span class="card-hdr-title">Market Intelligence</span></div>
+        <div class="card-body">
+          <div class="insights-grid" id="insightsGrid"></div>
+          <p style="font-size:14px;color:#94a3b8;line-height:1.8;margin-bottom:16px;" id="futureOutlook"></p>
+          <div class="flag-list" id="redFlags"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <strong style="color:var(--text);">CareerIQ</strong> · Salary data scraped from Indeed, Glassdoor & LinkedIn ·
+  AI analysis by <a href="https://anthropic.com">Anthropic Claude</a> ·
+  Always negotiate — you're worth it.
+</footer>
+
+</div><!-- /z -->
+
+<script>
+let currentData = null;
+
+const PLATFORM_ICONS = {
+  "Coursera":"🎓","YouTube":"▶️","Udemy":"🎯","edX":"🏛️",
+  "LinkedIn Learning":"💼","freeCodeCamp":"💻","Documentation":"📖",
+  "Book":"📘","Podcast":"🎙️","GitHub":"🐙","Pluralsight":"▶️","default":"📚"
+};
+
+// ── Search ────────────────────────────────────────────────────────────────
+async function search() {
+  const role = document.getElementById('roleInput').value.trim();
+  const loc  = document.getElementById('locInput').value.trim() || 'Global';
+  if (!role) { shake(document.getElementById('roleInput')); return; }
+
+  setStatus('blue','🔍 Scraping salary data from Indeed, Glassdoor & LinkedIn...');
+  setBtn(true);
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('results').style.display    = 'none';
+
+  try {
+    const res  = await fetch('/research', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ role, location: loc })
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) { setStatus('red','❌ ' + (data.error||'Something went wrong')); setBtn(false); return; }
+
+    currentData = { ...data, role, location: loc };
+    setStatus('green', `✅ Complete! Found data for "${role}" — ${(data.companies||[]).length} companies scraped`);
+    setBtn(false);
+    renderAll(data, role, loc);
+  } catch(e) {
+    setStatus('red','❌ Cannot reach backend. Is app.py running on localhost:5000?');
+    setBtn(false);
+  }
+}
+
+function quickSearch(role) {
+  document.getElementById('roleInput').value = role;
+  search();
+}
+
+// ── Render all sections ───────────────────────────────────────────────────
+function renderAll(d, role, loc) {
+  document.getElementById('resultRole').textContent = role;
+  document.getElementById('resultMeta').textContent =
+    `📍 ${loc} · ${(d.companies||[]).length} companies found · AI analysis complete`;
+  document.getElementById('results').style.display = 'block';
+
+  renderSalary(d);
+  renderCompanies(d);
+  renderSkills(d);
+  renderResources(d);
+  renderInterview(d);
+  renderNegotiate(d);
+  renderPeople(d);
+  renderMarket(d);
+  document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderSalary(d) {
+  const s = d.salary_overview || {};
+  document.getElementById('salaryBands').innerHTML = [
+    {label:'Entry Level', val: s.entry_level || '—'},
+    {label:'Mid Level',   val: s.mid_level   || '—'},
+    {label:'Senior Level',val: s.senior_level|| '—'},
+  ].map(b=>`
+    <div class="salary-band">
+      <div class="salary-band-label">${b.label}</div>
+      <div class="salary-band-val">${esc(b.val)}</div>
+    </div>`).join('');
+
+  const trend = (s.trend||'stable').toLowerCase();
+  const cls   = trend.includes('grow') ? 'trend-growing' : trend.includes('declin') ? 'trend-declining' : 'trend-stable';
+  const ico   = trend.includes('grow') ? '📈' : trend.includes('declin') ? '📉' : '➡️';
+  document.getElementById('trendBadge').innerHTML  = `<span class="trend-badge ${cls}">${ico} ${esc(s.trend||'Stable')}</span>`;
+  document.getElementById('trendReason').textContent = s.trend_reason || '';
+  document.getElementById('currencyNote').textContent = s.currency_note || '';
+  document.getElementById('dayInLife').textContent  = d.day_in_life || '';
+}
+
+function renderCompanies(d) {
+  const scraped = d.companies || [];
+  document.getElementById('companiesBody').innerHTML = scraped.length
+    ? scraped.map(c=>`
+      <tr>
+        <td><strong>${esc(c.company)}</strong></td>
+        <td style="color:#94a3b8;font-size:12px;">${esc(c.title||'—')}</td>
+        <td class="salary-cell">${esc(c.salary||'—')}</td>
+        <td><span class="source-tag src-${(c.source||'').toLowerCase()}">${esc(c.source||'—')}</span></td>
+      </tr>`).join('')
+    : `<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted);">No scraped data — showing AI-generated companies below</td></tr>`;
+
+  const top = d.top_companies || [];
+  document.getElementById('topCompaniesGrid').innerHTML = top.map(c=>`
+    <div class="cert-card">
+      <div class="cert-name">${esc(c.name)}</div>
+      <div class="cert-meta">
+        💰 ${esc(c.salary_range||'—')} &nbsp;·&nbsp;
+        ⭐ ${esc(c.rating||'—')} &nbsp;·&nbsp;
+        ${c.hiring ? '🟢 Hiring' : '⚪ Unknown'}
+      </div>
+      <div style="margin-top:6px;font-size:11px;color:var(--muted);">${esc(c.culture||'')}</div>
+    </div>`).join('');
+}
+
+function renderSkills(d) {
+  const skills = d.required_skills || [];
+  const demandMap = {'Very High':100,'High':75,'Medium':50,'Low':25};
+  const lvlPill   = {'Expert':'pill-expert','Advanced':'pill-advanced','Intermediate':'pill-intermediate','Beginner':'pill-beginner'};
+  document.getElementById('skillsGrid').innerHTML = skills.map(s=>`
+    <div class="skill-card">
+      <div class="skill-top">
+        <span class="skill-name">${esc(s.skill)}</span>
+        <span class="skill-cat">${esc(s.category||'')}</span>
+      </div>
+      <div class="skill-meta">
+        <span class="pill ${lvlPill[s.level]||'pill-beginner'}">${esc(s.level)}</span>
+        <span class="pill" style="background:rgba(34,211,238,.08);color:var(--cyan);">📊 ${esc(s.demand)}</span>
+      </div>
+      <div class="demand-bar-wrap"><div class="demand-bar" style="width:${demandMap[s.demand]||50}%"></div></div>
+    </div>`).join('');
+
+  const certs = d.certifications || [];
+  document.getElementById('certsList').innerHTML = certs.map(c=>`
+    <div class="cert-card">
+      <div class="cert-name">${esc(c.name)}</div>
+      <div class="cert-meta">
+        <span class="${c.value==='High'?'cert-val-high':'cert-val-med'}">${esc(c.value)} value</span> ·
+        ${esc(c.provider||'')} · ${esc(c.cost||'')} · ${esc(c.duration||'')}
+      </div>
+    </div>`).join('');
+}
+
+function renderResources(d) {
+  const res = d.learning_resources || [];
+  document.getElementById('resourcesList').innerHTML = res.map(r=>{
+    const ico = PLATFORM_ICONS[r.platform] || PLATFORM_ICONS.default;
+    return `
+    <div class="resource-item">
+      <div class="resource-icon" style="background:var(--surf);">${ico}</div>
+      <div class="resource-info">
+        <div class="resource-title">${esc(r.title)}</div>
+        <div class="resource-meta">${esc(r.platform||'')} ${r.duration ? '· '+esc(r.duration) : ''} · ${esc(r.type||'')}</div>
+        <div class="resource-tags">
+          <span class="${r.free?'free-tag':'paid-tag'}">${r.free?'Free':'Paid'}</span>
+          ${r.platform ? `<span class="platform-tag">${esc(r.platform)}</span>` : ''}
+        </div>
+      </div>
+      ${r.url ? `<a class="resource-link" href="${esc(r.url)}" target="_blank" rel="noopener">Visit →</a>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderInterview(d) {
+  const qs = d.interview_questions || [];
+  document.getElementById('questionsList').innerHTML = qs.map((q,i)=>{
+    const catCls  = q.category ? 'cat-'+q.category.toLowerCase() : 'cat-technical';
+    const diffCls = q.difficulty ? 'q-diff-'+q.difficulty.toLowerCase() : 'q-diff-medium';
+    return `
+    <div class="q-item" id="q${i}">
+      <div class="q-header" onclick="toggleQ(${i})">
+        <div class="q-num">${i+1}</div>
+        <div class="q-text">${esc(q.question)}</div>
+        <div class="q-tags">
+          <span class="q-cat ${catCls}">${esc(q.category||'General')}</span>
+          <span class="${diffCls}">${esc(q.difficulty||'Medium')}</span>
+        </div>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="q-answer">💡 <strong>Answer guide:</strong> ${esc(q.sample_answer||'')}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleQ(i) {
+  document.getElementById('q'+i).classList.toggle('open');
+}
+
+function renderNegotiate(d) {
+  const neg = d.negotiation_scripts || {};
+  const scripts = [
+    {label:'Opening Line', key:'opening_line'},
+    {label:'Counter Offer', key:'counter_offer'},
+    {label:'When Offer is Too Low', key:'handling_lowball'},
+    {label:'Closing the Deal', key:'closing'},
+  ];
+  document.getElementById('negScripts').innerHTML = scripts.map(s=>`
+    <div class="script-box">
+      <div class="script-label">${s.label}</div>
+      <div class="script-text">"${esc(neg[s.key]||'—')}"</div>
+    </div>`).join('');
+  document.getElementById('emailTemplate').textContent = neg.email_template || '—';
+}
+
+function renderPeople(d) {
+  const people = d.linkedin_people || [];
+  const emojis = ['👨‍💻','👩‍💻','👨‍🔬','👩‍🔬','👨‍💼','👩‍💼','🧑‍💻','👨‍🎨','👩‍🎨','🧑‍🎓'];
+  document.getElementById('peopleGrid').innerHTML = people.length
+    ? people.map((p,i)=>`
+      <div class="person-card">
+        <div class="person-avatar">${emojis[i%emojis.length]}</div>
+        <div>
+          <div class="person-name">${esc(p.name)}</div>
+          <div class="person-title">${esc(p.title||'')} ${p.company?'@ '+esc(p.company):''}</div>
+          ${p.url ? `<a class="person-link" href="${esc(p.url)}" target="_blank" rel="noopener">View LinkedIn →</a>` : ''}
+        </div>
+      </div>`).join('')
+    : `<p style="color:var(--muted);font-size:13px;">LinkedIn profiles require login to scrape. Use the tips below to find people manually.</p>`;
+
+  const tips = d.linkedin_search_tips || [];
+  if (tips.length) {
+    document.getElementById('linkedinTips').innerHTML = `
+      <div style="margin-top:16px;background:var(--surf2);border:1px solid var(--border2);border-radius:12px;padding:16px;">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:10px;">🔍 LinkedIn Search Tips</div>
+        ${tips.map(t=>`<div style="font-size:13px;color:#94a3b8;margin-bottom:6px;display:flex;gap:8px;"><span style="color:var(--accent);">→</span>${esc(t)}</div>`).join('')}
+      </div>`;
+  }
+}
+
+function renderMarket(d) {
+  const m = d.market_insights || {};
+  document.getElementById('insightsGrid').innerHTML = [
+    {val: m.demand_score ? m.demand_score+'/100' : '—', lbl:'Demand Score'},
+    {val: m.avg_job_postings_monthly||'—', lbl:'Monthly Job Posts'},
+    {val: m.years_to_senior||'—', lbl:'Years to Senior'},
+  ].map(x=>`
+    <div class="insight-card">
+      <div class="insight-val">${esc(String(x.val))}</div>
+      <div class="insight-lbl">${x.lbl}</div>
+    </div>`).join('');
+
+  document.getElementById('futureOutlook').textContent = m.future_outlook || '';
+
+  const flags = d.red_flags || [];
+  document.getElementById('redFlags').innerHTML = flags.length
+    ? `<div style="font-size:11px;color:var(--red);text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:10px;">⚠️ Red Flags to Watch</div>` +
+      flags.map(f=>`<div class="flag-item"><span>⚠️</span>${esc(f)}</div>`).join('')
+    : '';
+}
+
+// ── Download PDF ──────────────────────────────────────────────────────────
+async function downloadPDF() {
+  if (!currentData) return;
+  try {
+    const res = await fetch('/download/report', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(currentData)
+    });
+    if (!res.ok) { alert('PDF export failed. Run: pip3 install reportlab'); return; }
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${currentData.role}_career_report.pdf`; a.click();
+  } catch(e) { alert('Cannot reach backend for PDF export.'); }
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function setStatus(color, msg) {
+  const wrap = document.getElementById('statusWrap');
+  const dot  = document.getElementById('sdot');
+  const txt  = document.getElementById('statusMsg');
+  wrap.style.display = 'block';
+  dot.className = 'sdot sdot-'+(color==='blue'?'blue':color==='green'?'green':'red');
+  txt.textContent = msg;
+}
+
+function setBtn(disabled) {
+  const btn = document.getElementById('searchBtn');
+  btn.disabled = disabled;
+  btn.innerHTML = disabled
+    ? '<span class="spinner"></span> Researching...'
+    : '🔍 Research';
+}
+
+function shake(el) {
+  el.style.borderColor='#f43f5e';
+  setTimeout(()=>{ el.style.borderColor=''; }, 1000);
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

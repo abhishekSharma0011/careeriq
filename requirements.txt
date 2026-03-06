@@ -1,0 +1,6 @@
+scrapling[fetchers]
+flask
+flask-cors
+openpyxl
+reportlab
+python-dotenv
